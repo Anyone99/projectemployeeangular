@@ -1,4 +1,7 @@
 
 <!--La plantilla del componente de alerta contiene el html para mostrar mensajes de alerta en la parte superior de la página.-->
 
-<div *ngIf="message" [ngClass]="message.cssClass">{{message.text}}</div>
+<div *ngFor="message" class="{{cssClss(aler)}}">
+  <a class="close" (click)="removeAlert(alert)">&times;</a>
+  <span [innerHtml]="alert.message"></span>
+</div>
