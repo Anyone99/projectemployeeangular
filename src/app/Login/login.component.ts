@@ -11,9 +11,24 @@ export class LoginComponent implements OnInit {
   returnUrl : string;
 
   constructor(
-    private formBuilder : FormBuider,
-    private route : ActivetedRoute,
+    private formBuilder : FormBuilder,
+    private route : ActivatedRoute,
     private router : Router,
-  )
 
+  ) {
+    
+  }
+  //inicializar los datos.
+  ngOnInit(){
+    this.loginForm = this.formBuilder.group({
+      email :['',Validators.required],
+      password : ['',Validators.required]
+    });
+    //obtener la devolución del url o por defecto /
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  }
+
+  get f(){ return this.loginForm.controls;}
+
+  
 }

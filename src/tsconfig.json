@@ -1,8 +1,0 @@
-//compliar la opcion para usar TypeScript.
-{
-    "compilerOptions": {
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "target": "ES5"
-    }
-}

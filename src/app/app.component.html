@@ -1,4 +1,11 @@
-<hello name="{{ name }}"></hello>
-<p>
-  Start editing to see some magic happen :)
-</p>
+<!-- nav -->
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="Employee">
+    <div class="navbar-nav">
+      <!--routerLink="/" [routerLinkActiveOptions]="{exact: true}"-->
+        <a class="nav-item nav-link" routerLinkActive="active">Home</a>
+        <a class="nav-item nav-link" routerLinkActive="active">Users</a>
+        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+</nav>
+
+<!-- main app container -->

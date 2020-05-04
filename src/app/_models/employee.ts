@@ -1,5 +1,4 @@
 // clase de empleador
-
 export class Employee {
   idEmployee : String
   nombre : String;
