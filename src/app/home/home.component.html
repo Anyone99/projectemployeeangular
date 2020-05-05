@@ -1,11 +1,12 @@
-<div class="p-4">
-	<div class="container">
-		<div class="jumbotron">
-			<h1 class="display-4">Hello, world!</h1>
-			<p class="lead">Este es el manage de administrador</p>
-			<hr class="my-4">
-			<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-			<a class="btn btn-primary btn-lg" role="button">Login</a>
-		</div>
+<div class="card mt-4">
+	<h4 class="card-header">Home</h4>
+	<div class="card-body">
+		<p>Your role is: <strong>{{employee.role}}</strong>.</p>
+		<p>This page can be accessed by <u>all authenticated users</u>.</p>
+		<p class="mb-1">Current user from secure api end point:</p>
+		<div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
+		<ul *ngIf="employeeFromApi">
+			<li>{{employeeFromApi.nombre}} {{employeeFromApi.apellido}}</li>
+		</ul>
 	</div>
 </div>

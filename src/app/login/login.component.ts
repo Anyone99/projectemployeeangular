@@ -36,4 +36,24 @@ export class LoginComponent implements OnInit {
   get f() {
     return this.loginForm.controls;
   }
+
+  onSubmit() {
+    this.submitted = true;
+
+    //si login no es valido
+    if (this.loginForm.invalid) {
+      return;
+    }
+    this.loading = true;
+    this.employeeService
+      .login(this.f.dni.value, this.f.password.value)
+      .pipe(first())
+      .subscribe(data => {
+        this.router.navigate([this.returnUrl]);
+        error => {
+          this.error = error;
+          this.loading = false;
+        };
+      });
+  }
 }

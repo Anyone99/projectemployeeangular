@@ -12,6 +12,7 @@ import { delay, mergeMap, materialize, dematerialize } from "rxjs/operators";
 import { Employee, Role } from "../_models";
 
 let employee = JSON.parse(localStorage.getItem("employee")) || [];
+
 const admin: Employee[] = [
   {
     idEmployee: 1,
@@ -39,7 +40,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       .pipe(delay(500))
       .pipe(dematerialize());
 
+    function addAdmin() {
+      if (Object.keys(employee).length === 0) {
+        employee.push(admin);
+        localStorage.setItem("employee", JSON.stringify(employee));
+        this.ok(admin);
+        console.log(employee);
+      }
+    }
+
     function handleRoute() {
+      addAdmin();
+      
       switch (true) {
         case url.endsWith("/employees/authenticate") && method === "POST":
           return authenticate();
@@ -73,6 +85,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         role: emp.role,
         token: `fake-jwt-token.${emp.idEmployee}`
       });
+      console.log(emp);
     }
 
     function register() {

@@ -23,7 +23,7 @@ export class EmployeeService {
     return this.employeeSubject.value;
   }
 
-  login(dni, password) {
+  login(dni: String, password: String) {
     return this.http
       .post<Employee>(`${environment.apiUrl}/employees/authenticate`, {
         dni,
@@ -31,9 +31,12 @@ export class EmployeeService {
       })
       .pipe(
         map(employee => {
-          //guardar los datos de usuario y jwt token en un local storage to keep user logged in between page refreshes
-          localStorage.setItem("employee", JSON.stringify(employee));
-          this.employeeSubject.next(employee);
+          if (employee && employee.token) {
+            //guardar los datos de usuario y jwt token en un local storage to keep user logged in between page refreshes
+            localStorage.setItem("employee", JSON.stringify(employee));
+            this.employeeSubject.next(employee);
+          }
+          console.log(employee);
           return employee;
         })
       );
@@ -51,7 +54,7 @@ export class EmployeeService {
   }
 
   getAll() {
-    return this.http.get<Employee[]>(`${environment.apiUrl}/employee`);
+    return this.http.get<Employee[]>(`${environment.apiUrl}/employees`);
   }
 
   getById(idEmployee: Number) {
@@ -79,14 +82,13 @@ export class EmployeeService {
   }
 
   delete(idEmployee: Number) {
-    var number = new Number(10);
     return this.http
       .delete(`${environment.apiUrl}/employees/${idEmployee}`)
       .pipe(
         map(x => {
           if (idEmployee === this.employeeValue.idEmployee) {
-            this.logout();
             console.log("Delete : " + idEmployee);
+            this.logout();
           }
           return x;
         })

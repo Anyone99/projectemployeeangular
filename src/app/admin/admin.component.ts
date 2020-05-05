@@ -9,7 +9,7 @@ import { Employee } from "../_models";
 @Component({ templateUrl: "admin.component.html" })
 export class AdminComponent implements OnInit {
   loading = false;
-  admin: Employee[] = [];
+  employees: Employee[] = [];
 
   constructor(private employeeService: EmployeeService) {}
   //inicializar los datos.
@@ -18,9 +18,9 @@ export class AdminComponent implements OnInit {
     this.employeeService
       .getAll()
       .pipe(first())
-      .subscribe(admin => {
+      .subscribe(employees => {
         this.loading = false;
-        this.admin = admin;
+        this.employees = employees;
       });
   }
 }
