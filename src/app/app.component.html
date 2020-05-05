@@ -1,11 +1,15 @@
 <!-- nav -->
 <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="Employee">
-    <div class="navbar-nav">
-      <!--routerLink="/" [routerLinkActiveOptions]="{exact: true}"-->
-        <a class="nav-item nav-link" routerLinkActive="active">Home</a>
-        <a class="nav-item nav-link" routerLinkActive="active">Users</a>
-        <a class="nav-item nav-link" (click)="logout()">Logout</a>
-    </div>
+	<div class="navbar-nav">
+		<!--routerLink="/" [routerLinkActiveOptions]="{exact: true}"-->
+		<a class="nav-item nav-link" routerLink="/">Home</a>
+		<a class="nav-item nav-link" routerLink="/admin" *ngIf="isAdmin">Users</a>
+		<a class="nav-item nav-link" (click)="logout()">Logout</a>
+	</div>
 </nav>
 
 <!-- main app container -->
+
+<div class="container">
+	<router-outlet></router-outlet>
+</div>

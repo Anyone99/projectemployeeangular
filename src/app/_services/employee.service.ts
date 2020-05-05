@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 
-import { environment } from "../../environments";
+import { environment } from "../../environment";
 import { Employee } from "../_models";
 
 @Injectable({ providedIn: "root" })
@@ -25,7 +25,7 @@ export class EmployeeService {
 
   login(dni, password) {
     return this.http
-      .post<Employee>(`${environment.apiUrl}/employee/authenticate`, {
+      .post<Employee>(`${environment.apiUrl}/employees/authenticate`, {
         dni,
         password
       })
@@ -43,11 +43,11 @@ export class EmployeeService {
   logout() {
     localStorage.removeItem("employee");
     this.employeeSubject.next(null);
-    this.router.navigate(["/account/login"]);
+    this.router.navigate(["/login"]);
   }
 
   register(employee: Employee) {
-    return this.http.post(`${environment.apiUrl}/employee/register`, employee);
+    return this.http.post(`${environment.apiUrl}/employees/register`, employee);
   }
 
   getAll() {
@@ -56,13 +56,13 @@ export class EmployeeService {
 
   getById(idEmployee: Number) {
     return this.http.get<Employee>(
-      `${environment.apiUrl}/employee/${idEmployee}`
+      `${environment.apiUrl}/employees/${idEmployee}`
     );
   }
 
   update(idEmployee, params) {
     return this.http
-      .put(`${environment.apiUrl}/employee/${idEmployee}`, params)
+      .put(`${environment.apiUrl}/employees/${idEmployee}`, params)
       .pipe(
         map(x => {
           //modificar el usuario guardado si está logueado en el usuario.
@@ -79,16 +79,17 @@ export class EmployeeService {
   }
 
   delete(idEmployee: Number) {
-    var number = new Number(10); 
+    var number = new Number(10);
     return this.http
-      .delete(`${environment.apiUrl}/employee/${idEmployee}`)
+      .delete(`${environment.apiUrl}/employees/${idEmployee}`)
       .pipe(
         map(x => {
-          if (idEmployee.toString() === this.employeeValue.idEmployee) {
+          if (idEmployee === this.employeeValue.idEmployee) {
             this.logout();
-            console.log('Delete : '  + idEmployee);
+            console.log("Delete : " + idEmployee);
           }
           return x;
-        }));
+        })
+      );
   }
 }

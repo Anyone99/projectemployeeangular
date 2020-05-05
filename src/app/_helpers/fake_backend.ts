@@ -32,6 +32,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const { url, method, headers, body } = request;
+
     return of(null)
       .pipe(mergeMap(handleRoute))
       .pipe(materialize())
@@ -40,17 +41,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function handleRoute() {
       switch (true) {
-        case url.endsWith("/employee/authenticate") && method === "POST":
+        case url.endsWith("/employees/authenticate") && method === "POST":
           return authenticate();
-        case url.endsWith("/employee/register") && method === "POST":
+        case url.endsWith("/employees/register") && method === "POST":
           return register();
-        case url.endsWith("/employee") && method === "GET":
+        case url.endsWith("/employees") && method === "GET":
           return getEmployee();
-        case url.match(/\/employee\/\d+$/) && method === "GET":
+        case url.match(/\/employees\/\d+$/) && method === "GET":
           return getEmployeeById();
-        case url.match(/\/employee\/\d+$/) && method === "PUT":
+        case url.match(/\/employees\/\d+$/) && method === "PUT":
           return updateEmployee();
-        case url.match(/\/employee\/\d+$/) && method === "DELETE":
+        case url.match(/\/employees\/\d+$/) && method === "DELETE":
           return deleteEmployee();
         default:
           // pass through any requests not handled above
@@ -70,7 +71,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         nombre: emp.nombre,
         apellido: emp.apellido,
         role: emp.role,
-        token: "fake-jwt-token." + emp.idEmployee
+        token: `fake-jwt-token.${emp.idEmployee}`
       });
     }
 
@@ -81,7 +82,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return error('dni  :  "' + user.dni + '" is already taken');
       }
 
-      user.id = employee.length
+      user.idEmployee = employee.length
         ? Math.max(...employee.map(x => x.idEmployee)) + 1
         : 1;
       user.role = Role.Employee;
@@ -92,13 +93,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getEmployee() {
       if (!isLoggedIn()) return unauthorized();
-      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
+      if (!isAdmin() && currentUser().idEmployee !== idFromUrl())
+        return unauthorized();
       return ok(employee);
     }
 
     function getEmployeeById() {
       if (!isLoggedIn()) return unauthorized();
-      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
+      if (!isAdmin() && currentUser().idEmployee !== idFromUrl())
+        return unauthorized();
 
       const emp = employee.find(x => x.idEmployee === idFromUrl());
       return ok(emp);
@@ -106,7 +109,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function updateEmployee() {
       if (!isLoggedIn()) return unauthorized();
-      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
+      if (!isAdmin() && currentUser().idEmployee !== idFromUrl())
+        return unauthorized();
 
       let params = body;
       let emp = employee.find(x => x.idEmployee === idFromUrl());
@@ -141,6 +145,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function idFromUrl() {
       const urlParts = url.split("/");
+      return parseInt(urlParts[urlParts.length - 1]);
     }
 
     function isAdmin() {
@@ -150,7 +155,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function currentUser() {
       if (!isLoggedIn()) return;
       const id = parseInt(headers.get("Authorization").split(".")[1]);
-      return employee.find(x => x.id === id);
+      return employee.find(x => x.idEmployee === id);
     }
 
     //si está logeado

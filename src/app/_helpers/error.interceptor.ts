@@ -1,11 +1,9 @@
 import { Injectable } from "@angular/core";
 import {
   HttpRequest,
-  HttpResponse,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor,
-  HTTP_INTERCEPTORS
+  HttpInterceptor
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
@@ -25,6 +23,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         if (err.status === 401) {
           // auto logout if 401 response returned from api
           this.employeeService.logout();
+          location.reload(true);
         }
         const error = err.error.message || err.statusText;
         return throwError(error);
