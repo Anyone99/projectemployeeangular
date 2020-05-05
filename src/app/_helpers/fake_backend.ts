@@ -84,6 +84,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       user.id = employee.length
         ? Math.max(...employee.map(x => x.idEmployee)) + 1
         : 1;
+      user.role = Role.Employee;
       employee.push(user);
       localStorage.setItem("employee", JSON.stringify(employee));
       return ok();
@@ -146,12 +147,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return isLoggedIn() && currentUser().rol === Role.Admin;
     }
 
-    function currentUser(){
+    function currentUser() {
       if (!isLoggedIn()) return;
-      const id = parseInt(headers.get('Authorization').split('.')[1]);
+      const id = parseInt(headers.get("Authorization").split(".")[1]);
       return employee.find(x => x.id === id);
     }
-
 
     //si está logeado
     function isLoggedIn() {
