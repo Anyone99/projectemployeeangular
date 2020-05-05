@@ -4,7 +4,7 @@
 		<p>This page can be accessed <u>only by administrators</u>.</p>
 		<p class="mb-1">All users from secure (admin only) api end point:</p>
 		<div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-		<ul *ngIf="employee">
+		<ul *ngIf="employees">
 			<li *ngFor="let employee of employees">{{employee.nombre}} {{employee.apellido}}</li>
 		</ul>
 	</div>

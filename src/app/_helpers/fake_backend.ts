@@ -51,7 +51,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function handleRoute() {
       addAdmin();
-      
+
       switch (true) {
         case url.endsWith("/employees/authenticate") && method === "POST":
           return authenticate();
