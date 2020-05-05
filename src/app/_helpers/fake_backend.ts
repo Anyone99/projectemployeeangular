@@ -9,8 +9,21 @@ import {
 } from "@angular/common/http";
 import { Observable, of, throwError } from "rxjs";
 import { delay, mergeMap, materialize, dematerialize } from "rxjs/operators";
+import { Employee, Role } from "../_models";
 
 let employee = JSON.parse(localStorage.getItem("employee")) || [];
+const admin: Employee[] = [
+  {
+    idEmployee: 1,
+    nombre: "admin",
+    apellido: "admin",
+    dni: "11111111F",
+    password: "root",
+    dateContrato: new Date("01-05-2020"),
+    diaVacaciones: 0,
+    role: Role.Admin
+  }
+];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -48,25 +61,24 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     // route functions
 
     function authenticate() {
-      const { email, password } = body;
-      const emp = employee.find(
-        x => x.email === email && x.password === password
-      );
-      if (!emp) return error("Email or password is incorrect");
+      const { dni, password } = body;
+      const emp = employee.find(x => x.dni === dni && x.password === password);
+      if (!emp) return error("dni or password is incorrect");
       return ok({
         idEmployee: emp.idEmployee,
-        email: emp.email,
+        dni: emp.dni,
         nombre: emp.nombre,
         apellido: emp.apellido,
-        dni: emp.dni
+        role: emp.role,
+        token: "fake-jwt-token." + emp.idEmployee
       });
     }
 
     function register() {
       const user = body;
 
-      if (employee.find(x => x.email === user.email)) {
-        return error('Email  :  "' + user.email + '" is already taken');
+      if (employee.find(x => x.dni === user.dni)) {
+        return error('dni  :  "' + user.dni + '" is already taken');
       }
 
       user.id = employee.length
@@ -79,17 +91,21 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getEmployee() {
       if (!isLoggedIn()) return unauthorized();
+      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
       return ok(employee);
     }
 
     function getEmployeeById() {
       if (!isLoggedIn()) return unauthorized();
+      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
+
       const emp = employee.find(x => x.idEmployee === idFromUrl());
       return ok(emp);
     }
 
     function updateEmployee() {
       if (!isLoggedIn()) return unauthorized();
+      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
 
       let params = body;
       let emp = employee.find(x => x.idEmployee === idFromUrl());
@@ -105,6 +121,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function deleteEmployee() {
       if (!isLoggedIn()) return unauthorized();
+      if (!isAdmin() && currentUser().id !== idFromUrl()) return unauthorized();
 
       employee = employee.filter(x => x.idEmployee !== idFromUrl());
       localStorage.setItem("employee", JSON.stringify(employee));
@@ -124,6 +141,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function idFromUrl() {
       const urlParts = url.split("/");
     }
+
+    function isAdmin() {
+      return isLoggedIn() && currentUser().rol === Role.Admin;
+    }
+
+    function currentUser(){
+      if (!isLoggedIn()) return;
+      const id = parseInt(headers.get('Authorization').split('.')[1]);
+      return employee.find(x => x.id === id);
+    }
+
 
     //si está logeado
     function isLoggedIn() {

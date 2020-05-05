@@ -1,12 +1,15 @@
 // clase de empleador
+import {Role} from './role';
+
 export class Employee {
-  idEmployee : String
+  idEmployee : Number;
   nombre : String;
   apellido : String;
   dni : String;
-  email : String;
   password : String;
   dateContrato : Date;
   diaVacaciones : Number;
+  role : Role;
+  token? : string;
 
 }
