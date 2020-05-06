@@ -39,7 +39,7 @@ export class AddEditComponent implements OnInit {
             dni: ['', Validators.required],
             password: ['', passwordValidators],
             fechaContrato : ['', Validators.required],
-            diaVaciones : [0,Validators.required]
+            diaVacaciones : [0,Validators.required]
         });
 
         if (!this.isAddMode) {

@@ -23,7 +23,8 @@ const admin = {
   password: "admin222",
   fechaContrato: new Date("06/05/2020"),
   diaVacaciones: 0,
-  role: Role.Admin
+  role: Role.Admin,
+  take : "fake-jwt-token"
 };
 
 console.log("fake init : " + JSON.stringify(employees));
@@ -95,17 +96,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return error('dni "' + employee.dni + '" is already taken');
       }
 
-      employee.id = employees.length
-        ? Math.max(...employees.map(x => x.id)) + 1
-        : 1;
+      employee.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
+      employee.role = Role.Employee;
       employees.push(employee);
       localStorage.setItem("employees", JSON.stringify(employees));
       return ok();
     }
 
     function getUsers() {
-      if (!isLoggedIn()) return unauthorized();
-      if (!isAdmin()) return unauthorized();
+      if (!isLoggedIn() && !isAdmin()) return unauthorized();
       console.log(employees);
       return ok(employees);
     }
@@ -118,8 +117,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     function updateUser() {
-      if (!isLoggedIn()) return unauthorized();
-      if (!isAdmin()) return unauthorized();
+      if (!isLoggedIn() && !isAdmin()) return unauthorized();
       let params = body;
       let user = employees.find(x => x.id === idFromUrl());
 
