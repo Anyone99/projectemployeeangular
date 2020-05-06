@@ -36,7 +36,8 @@ export class EmployeeService {
             localStorage.setItem("employee", JSON.stringify(employee));
             this.employeeSubject.next(employee);
           }
-          console.log(employee);
+          console.log("Employee Service - Login " + employee);
+          
           return employee;
         })
       );

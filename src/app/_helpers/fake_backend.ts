@@ -12,7 +12,7 @@ import { delay, mergeMap, materialize, dematerialize } from "rxjs/operators";
 import { Employee, Role } from "../_models";
 
 let employee = JSON.parse(localStorage.getItem("employee")) || [];
-
+console.log("Employee " + employee);
 const admin: Employee[] = [
   {
     idEmployee: 1,
@@ -40,18 +40,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       .pipe(delay(500))
       .pipe(dematerialize());
 
-    function addAdmin() {
-      if (Object.keys(employee).length === 0) {
-        employee.push(admin);
-        localStorage.setItem("employee", JSON.stringify(employee));
-        this.ok(admin);
-        console.log(employee);
-      }
+    if (Object.keys(employee).length === 0) {
+      employee.push(admin);
+      localStorage.setItem("employee", JSON.stringify(employee));
+      ok(admin);
+      console.log("Add Admin : " + employee);
     }
 
     function handleRoute() {
-      addAdmin();
-
       switch (true) {
         case url.endsWith("/employees/authenticate") && method === "POST":
           return authenticate();
@@ -76,7 +72,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function authenticate() {
       const { dni, password } = body;
       const emp = employee.find(x => x.dni === dni && x.password === password);
+      console.log("authenticate : " + dni + " " + password + " : " + emp) ;
+
       if (!emp) return error("dni or password is incorrect");
+
       return ok({
         idEmployee: emp.idEmployee,
         dni: emp.dni,
@@ -85,7 +84,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         role: emp.role,
         token: `fake-jwt-token.${emp.idEmployee}`
       });
-      console.log(emp);
     }
 
     function register() {
@@ -106,8 +104,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getEmployee() {
       if (!isLoggedIn()) return unauthorized();
-      if (!isAdmin() && currentUser().idEmployee !== idFromUrl())
-        return unauthorized();
+      if (!isAdmin()) return unauthorized();
+
       return ok(employee);
     }
 
@@ -148,14 +146,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     //----- helper functions ----
 
-    //comprobar si el usuario está autorizado.
-    function unauthorized() {
-      return throwError({
-        statys: 401,
-        error: { message: "El empleado no está autorizado" }
-      });
-    }
-
     function idFromUrl() {
       const urlParts = url.split("/");
       return parseInt(urlParts[urlParts.length - 1]);
@@ -173,12 +163,21 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     //si está logeado
     function isLoggedIn() {
-      return headers.get("Autorizartion") === "Bearer fake-jwt-token";
+      const authHeader = headers.get("Authorization") || "";
+      return authHeader.startsWith("Bearer fake-jwt-token");
     }
 
     //si está ok .
     function ok(body?) {
       return of(new HttpResponse({ status: 200, body }));
+    }
+
+    //comprobar si el usuario está autorizado.
+    function unauthorized() {
+      return throwError({
+        statys: 401,
+        error: { message: "El empleado no está autorizado" }
+      });
     }
 
     //mensaje de error
