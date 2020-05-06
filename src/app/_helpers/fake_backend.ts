@@ -20,7 +20,7 @@ const admin = {
   nombre: "admin",
   apellido: "admin",
   dni: "00000000F",
-  password : "admin222",
+  password: "admin222",
   fechaContrato: new Date("06/05/2020"),
   diaVacaciones: 0,
   role: Role.Admin
@@ -48,7 +48,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       } else {
         employees.push(admin);
         localStorage.setItem("employees", JSON.stringify(employees));
-        console.log("Admin : " + admi)
+        console.log("Admin : " + admin);
       }
 
       switch (true) {
@@ -83,6 +83,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         dni: employee.dni,
         nombre: employee.nombre,
         apellido: employee.apellido,
+        role: employee.role,
         token: "fake-jwt-token"
       });
     }
@@ -104,6 +105,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getUsers() {
       if (!isLoggedIn()) return unauthorized();
+      if (!isAdmin()) return unauthorized();
       console.log(employees);
       return ok(employees);
     }
@@ -117,7 +119,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function updateUser() {
       if (!isLoggedIn()) return unauthorized();
-
+      if (!isAdmin()) return unauthorized();
       let params = body;
       let user = employees.find(x => x.id === idFromUrl());
 
@@ -135,7 +137,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function deleteUser() {
       if (!isLoggedIn()) return unauthorized();
-
+      if (!isAdmin()) return unauthorized();
       employees = employees.filter(x => x.id !== idFromUrl());
       localStorage.setItem("employees", JSON.stringify(employees));
       return ok();
@@ -162,6 +164,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function idFromUrl() {
       const urlParts = url.split("/");
       return parseInt(urlParts[urlParts.length - 1]);
+    }
+
+    function isAdmin() {
+      const user = employees.find(x => x.id === idFromUrl());
+      if (user.role === Role.Admin) {
+        return user.role === Role.Admin;
+      }
     }
   }
 }

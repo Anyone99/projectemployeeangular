@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
 
-import { EmployeeService } from "../_services";
+import { AccountService } from "../_services";
 import { Employee } from "../_models";
 
 @Component({ templateUrl: "admin.component.html" })
@@ -11,7 +11,7 @@ export class AdminComponent implements OnInit {
   loading = false;
   employees: Employee[] = [];
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private employeeService: AccountService) {}
   //inicializar los datos.
   ngOnInit() {
     this.loading = true;

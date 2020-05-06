@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 
 import { AccountService } from "./_services";
-import { Employee } from "./_models";
+import { Employee, Role } from "./_models";
 
 @Component({ selector: "app", templateUrl: "app.component.html" })
 export class AppComponent {
@@ -13,5 +13,9 @@ export class AppComponent {
 
   logout() {
     this.accountService.logout();
+  }
+
+  get isAdmin() {
+    return this.employee.role === Role.Admin;
   }
 }

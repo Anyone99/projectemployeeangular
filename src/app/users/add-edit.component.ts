@@ -50,7 +50,7 @@ export class AddEditComponent implements OnInit {
                     this.f.apellido.setValue(x.apellido);
                     this.f.dni.setValue(x.dni);
                     this.f.fechaContrato.setValue(x.fechaContrato);
-                    this.f.diaVaciones.setValue(x.diaVacaciones);
+                    this.f.diaVacaciones.setValue(x.diaVacaciones);
                 });
         }
     }
