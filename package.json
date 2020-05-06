@@ -1,24 +1,24 @@
 {
-  "name": "angular",
+  "name": "angular-9-registration-login-example",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@angular/animations": "9.1.0",
+    "@angular/animations": "^9.1.0",
     "@angular/common": "^9.1.0",
     "@angular/compiler": "^9.1.0",
-    "@angular/core": "^9.1.0", //funcción de angular
+    "@angular/core": "^9.1.0",
     "@angular/forms": "^9.1.0",
     "@angular/platform-browser": "^9.1.0",
     "@angular/platform-browser-dynamic": "^9.1.0",
     "@angular/router": "^9.1.0",
     "core-js": "^3.6.4",
-    "rxjs": "^6.5.4", //es la extension librería de Javascript
+    "rxjs": "^6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "^0.10.3"
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve", //"webpack-dev-server --mode development --open"
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
