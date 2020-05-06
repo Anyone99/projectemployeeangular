@@ -12,6 +12,8 @@ export class AddEditComponent implements OnInit {
     isAddMode: boolean;
     loading = false;
     submitted = false;
+    fechaContrato;
+    diaVacaciones;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -35,7 +37,9 @@ export class AddEditComponent implements OnInit {
             nombre: ['', Validators.required],
             apellido: ['', Validators.required],
             dni: ['', Validators.required],
-            password: ['', passwordValidators]
+            password: ['', passwordValidators],
+            fechaContrato : ['', Validators.required],
+            diaVaciones : [0,Validators.required]
         });
 
         if (!this.isAddMode) {
@@ -45,6 +49,8 @@ export class AddEditComponent implements OnInit {
                     this.f.nombre.setValue(x.nombre);
                     this.f.apellido.setValue(x.apellido);
                     this.f.dni.setValue(x.dni);
+                    this.f.fechaContrato.setValue(x.fechaContrato);
+                    this.f.diaVaciones.setValue(x.diaVacaciones);
                 });
         }
     }
@@ -69,6 +75,13 @@ export class AddEditComponent implements OnInit {
         } else {
             this.updateUser();
         }
+    }
+
+    calcularDiaVaciones(){
+      if (this.fechaContrato){
+
+      }
+
     }
 
     private createUser() {

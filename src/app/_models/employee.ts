@@ -6,7 +6,7 @@ export class Employee {
   nombre: string;
   apellido: string;
   fechaContrato: Date;
-  diaContrato: number;
+  diaVacaciones: number;
   token: string;
   role: Role;
 }
