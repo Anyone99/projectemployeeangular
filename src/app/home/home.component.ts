@@ -5,9 +5,9 @@ import { AccountService } from '../_services';
 
 @Component({ templateUrl: 'home.component.html' })
 export class HomeComponent {
-    user: Employee;
+    employee: Employee;
 
     constructor(private accountService: AccountService) {
-        this.user = this.accountService.employeeValue;
+        this.employee = this.accountService.employeeValue;
     }
 }

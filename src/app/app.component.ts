@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
-import { AccountService } from './_services';
-import { Employee } from './_models';
+import { AccountService } from "./_services";
+import { Employee } from "./_models";
 
-@Component({ selector: 'app', templateUrl: 'app.component.html' })
+@Component({ selector: "app", templateUrl: "app.component.html" })
 export class AppComponent {
-    employee: Employee;
+  employee: Employee;
 
-    constructor(private accountService: AccountService) {
-        this.accountService.employee.subscribe(x => this.employee = x);
-    }
+  constructor(private accountService: AccountService) {
+    this.accountService.employee.subscribe(x => (this.employee = x));
+  }
 
-    logout() {
-        this.accountService.logout();
-    }
+  logout() {
+    this.accountService.logout();
+  }
 }

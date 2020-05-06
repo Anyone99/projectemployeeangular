@@ -6,6 +6,8 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 // array in local storage for registered users
 let employees = JSON.parse(localStorage.getItem('employees')) || [];
 
+console.log("fake init : " + JSON.stringify(employees));
+
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -42,32 +44,33 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function authenticate() {
             const { dni, password } = body;
-            const user = employees.find(x => x.dni === dni && x.password === password);
-            if (!user) return error('dni or password is incorrect');
+            const employee = employees.find(x => x.dni === dni && x.password === password);
+            if (!employee) return error('dni or password is incorrect');
             return ok({
-                id: user.id,
-                dni: user.dni,
-                nombre: user.nombre,
-                apellido: user.apellido,
+                id: employee.id,
+                dni: employee.dni,
+                nombre: employee.nombre,
+                apellido: employee.apellido,
                 token: 'fake-jwt-token'
             })
         }
 
         function register() {
-            const user = body
+            const employee = body
 
-            if (employees.find(x => x.dni === user.dni)) {
-                return error('dni "' + user.dni + '" is already taken')
+            if (employees.find(x => x.dni === employee.dni)) {
+                return error('dni "' + employee.dni + '" is already taken')
             }
 
-            user.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
-            employees.push(user);
+            employee.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
+            employees.push(employee);
             localStorage.setItem('employees', JSON.stringify(employees));
             return ok();
         }
 
         function getUsers() {
             if (!isLoggedIn()) return unauthorized();
+            console.log(employees);
             return ok(employees);
         }
 

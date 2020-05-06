@@ -1,31 +1,32 @@
-<h1>Users</h1>
-<a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a>
+<h1>List Employees</h1>
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Añadir Empleado</a>
 <table class="table table-striped">
-    <thead>
-        <tr>
-            <th style="width: 30%">First Name</th>
-            <th style="width: 30%">Last Name</th>
-            <th style="width: 30%">Username</th>
-            <th style="width: 10%"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let employee of employees">
-            <td>{{employee.nombre}}</td>
-            <td>{{employee.lastName}}</td>
-            <td>{{employee.username}}</td>
-            <td style="white-space: nowrap">
-                <a routerLink="edit/{{employee.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                <button (click)="deleteUser(employee.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
+	<thead>
+		<tr>
+			<th style="width: 30%">Nombre</th>
+			<th style="width: 30%">Apellido</th>
+			<th style="width: 30%">DNI</th>
+			<th style="width: 10%">Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let employee of employees">
+			<td>{{employee.nombre}}</td>
+			<td>{{employee.apellido}}</td>
+			<td>{{employee.dni}}</td>
+			<td style="white-space: nowrap">
+				<a routerLink="edit/{{employee.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+				<button (click)="deleteUser(employee.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="employee.isDeleting">
                     <span *ngIf="employee.isDeleting" class="spinner-border spinner-border-sm"></span>
                     <span *ngIf="!employee.isDeleting">Delete</span>
                 </button>
-            </td>
-        </tr>
-        <tr *ngIf="!employee">
-            <td colspan="4" class="text-center">
-                <span class="spinner-border spinner-border-lg align-center"></span>
-            </td>
-        </tr>
-    </tbody>
+			</td>
+		</tr>
+		<tr *ngIf="!employees">
+			<td colspan="4" class="text-center">
+				<span>No hay empleados;</span>
+				<!--<span class="spinner-border spinner-border-lg align-center"></span>-->
+			</td>
+		</tr>
+	</tbody>
 </table>

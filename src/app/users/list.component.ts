@@ -16,8 +16,8 @@ export class ListComponent implements OnInit {
     }
 
     deleteUser(id: string) {
-        const user = this.employees.find(x => x.id === id);
-        user.isDeleting = true;
+        const employee = this.employees.find(x => x.id === id);
+        employee.isDeleting = true;
         this.accountService.delete(id)
             .pipe(first())
             .subscribe(() => {
