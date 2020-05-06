@@ -3,20 +3,19 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { EmployeeService } from '../_services';
+import { AccountService } from '../_services';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private EmployeeService: EmployeeService) { }
+    constructor(private accountService: AccountService) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(catchError(err => {
-            if ([401, 403].indexOf(err.status) !== -1) {
-                // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-                this.EmployeeService.logout();
-                location.reload(true);
+            if (err.status === 401) {
+                // auto logout if 401 response returned from api
+                this.accountService.logout();
             }
-
+            
             const error = err.error.message || err.statusText;
             return throwError(error);
         }))

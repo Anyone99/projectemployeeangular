@@ -1,29 +1,17 @@
-import { Component } from "@angular/core";
-import { Router } from "@angular/router";
-import { EmployeeService } from "./_services";
-import { Employee, Role } from "./_models";
+import { Component } from '@angular/core';
 
-@Component({
-  selector: "app",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
-})
+import { AccountService } from './_services';
+import { User } from './_models';
+
+@Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent {
-  employee: Employee;
+    user: User;
 
-  constructor(
-    private router: Router,
-    private employeeService: EmployeeService
-  ) {
-    this.employeeService.employee.subscribe(x => (this.employee = x));
-  }
+    constructor(private accountService: AccountService) {
+        this.accountService.user.subscribe(x => this.user = x);
+    }
 
-  get isAdmin() {
-    return this.employee && this.employee.role === Role.Admin;
-  }
-
-  logout() {
-    this.employeeService.logout();
-    this.router.navigate(["/login"]);
-  }
+    logout() {
+        this.accountService.logout();
+    }
 }

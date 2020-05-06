@@ -1,12 +1,7 @@
-<div class="card mt-4">
-	<h4 class="card-header">Home</h4>
-	<div class="card-body">
-		<p>Your role is: <strong>{{employee.role}}</strong>.</p>
-		<p>This page can be accessed by <u>all authenticated users</u>.</p>
-		<p class="mb-1">Current user from secure api end point:</p>
-		<div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-		<ul *ngIf="employeeFromApi">
-			<li>{{employeeFromApi.nombre}} {{employeeFromApi.apellido}}</li>
-		</ul>
-	</div>
+<div class="p-4">
+    <div class="container">
+        <h1>Hi {{user.firstName}}!</h1>
+        <p>You're logged in with Angular 9!!</p>
+        <p><a routerLink="/users">Manage Users</a></p>
+    </div>
 </div>
