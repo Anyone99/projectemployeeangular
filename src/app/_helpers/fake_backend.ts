@@ -4,7 +4,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
 // array in local storage for registered users
-let users = JSON.parse(localStorage.getItem('users')) || [];
+let employees = JSON.parse(localStorage.getItem('employees')) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -20,17 +20,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function handleRoute() {
             switch (true) {
-                case url.endsWith('/users/authenticate') && method === 'POST':
+                case url.endsWith('/employee/authenticate') && method === 'POST':
                     return authenticate();
-                case url.endsWith('/users/register') && method === 'POST':
+                case url.endsWith('/employee/register') && method === 'POST':
                     return register();
-                case url.endsWith('/users') && method === 'GET':
+                case url.endsWith('/employee') && method === 'GET':
                     return getUsers();
-                case url.match(/\/users\/\d+$/) && method === 'GET':
+                case url.match(/\/employee\/\d+$/) && method === 'GET':
                     return getUserById();
-                case url.match(/\/users\/\d+$/) && method === 'PUT':
+                case url.match(/\/employee\/\d+$/) && method === 'PUT':
                     return updateUser();
-                case url.match(/\/users\/\d+$/) && method === 'DELETE':
+                case url.match(/\/employee\/\d+$/) && method === 'DELETE':
                     return deleteUser();
                 default:
                     // pass through any requests not handled above
@@ -41,14 +41,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         // route functions
 
         function authenticate() {
-            const { username, password } = body;
-            const user = users.find(x => x.username === username && x.password === password);
-            if (!user) return error('Username or password is incorrect');
+            const { dni, password } = body;
+            const user = employees.find(x => x.dni === dni && x.password === password);
+            if (!user) return error('dni or password is incorrect');
             return ok({
                 id: user.id,
-                username: user.username,
-                firstName: user.firstName,
-                lastName: user.lastName,
+                dni: user.dni,
+                nombre: user.nombre,
+                apellido: user.apellido,
                 token: 'fake-jwt-token'
             })
         }
@@ -56,25 +56,25 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function register() {
             const user = body
 
-            if (users.find(x => x.username === user.username)) {
-                return error('Username "' + user.username + '" is already taken')
+            if (employees.find(x => x.dni === user.dni)) {
+                return error('dni "' + user.dni + '" is already taken')
             }
 
-            user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
-            users.push(user);
-            localStorage.setItem('users', JSON.stringify(users));
+            user.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
+            employees.push(user);
+            localStorage.setItem('employees', JSON.stringify(employees));
             return ok();
         }
 
         function getUsers() {
             if (!isLoggedIn()) return unauthorized();
-            return ok(users);
+            return ok(employees);
         }
 
         function getUserById() {
             if (!isLoggedIn()) return unauthorized();
 
-            const user = users.find(x => x.id === idFromUrl());
+            const user = employees.find(x => x.id === idFromUrl());
             return ok(user);
         }
 
@@ -82,7 +82,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (!isLoggedIn()) return unauthorized();
 
             let params = body;
-            let user = users.find(x => x.id === idFromUrl());
+            let user = employees.find(x => x.id === idFromUrl());
 
             // only update password if entered
             if (!params.password) {
@@ -91,7 +91,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             // update and save user
             Object.assign(user, params);
-            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('employees', JSON.stringify(employees));
 
             return ok();
         }
@@ -99,8 +99,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function deleteUser() {
             if (!isLoggedIn()) return unauthorized();
 
-            users = users.filter(x => x.id !== idFromUrl());
-            localStorage.setItem('users', JSON.stringify(users));
+            employees = employees.filter(x => x.id !== idFromUrl());
+            localStorage.setItem('employees', JSON.stringify(employees));
             return ok();
         }
 

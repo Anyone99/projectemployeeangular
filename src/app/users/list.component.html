@@ -10,19 +10,19 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of users">
-            <td>{{user.firstName}}</td>
-            <td>{{user.lastName}}</td>
-            <td>{{user.username}}</td>
+        <tr *ngFor="let employee of employees">
+            <td>{{employee.nombre}}</td>
+            <td>{{employee.lastName}}</td>
+            <td>{{employee.username}}</td>
             <td style="white-space: nowrap">
-                <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
-                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
-                    <span *ngIf="!user.isDeleting">Delete</span>
+                <a routerLink="edit/{{employee.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                <button (click)="deleteUser(employee.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
+                    <span *ngIf="employee.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!employee.isDeleting">Delete</span>
                 </button>
             </td>
         </tr>
-        <tr *ngIf="!users">
+        <tr *ngIf="!employee">
             <td colspan="4" class="text-center">
                 <span class="spinner-border spinner-border-lg align-center"></span>
             </td>

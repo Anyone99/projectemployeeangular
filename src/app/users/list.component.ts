@@ -5,23 +5,23 @@ import { AccountService } from '../_services';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
-    users = null;
+    employees = null;
 
     constructor(private accountService: AccountService) {}
 
     ngOnInit() {
         this.accountService.getAll()
             .pipe(first())
-            .subscribe(users => this.users = users);
+            .subscribe(employees => this.employees = employees);
     }
 
     deleteUser(id: string) {
-        const user = this.users.find(x => x.id === id);
+        const user = this.employees.find(x => x.id === id);
         user.isDeleting = true;
         this.accountService.delete(id)
             .pipe(first())
             .subscribe(() => {
-                this.users = this.users.filter(x => x.id !== id) 
+                this.employees = this.employees.filter(x => x.id !== id) 
             });
     }
 }
