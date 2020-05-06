@@ -40,14 +40,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       .pipe(delay(500))
       .pipe(dematerialize());
 
-    if (Object.keys(employee).length === 0) {
-      employee.push(admin);
-      localStorage.setItem("employee", JSON.stringify(employee));
-      ok(admin);
-      console.log("Add Admin : " + employee);
-    }
-
     function handleRoute() {
+      if (Object.keys(employee).length === 0) {
+        employee.push(admin);
+        localStorage.setItem("employee", JSON.stringify(employee));
+        ok(admin);
+        console.log("Add Admin : " + JSON.parse(employee));
+      }
+      console.log("Lista Admin : " + JSON.parse(employee));
+
       switch (true) {
         case url.endsWith("/employees/authenticate") && method === "POST":
           return authenticate();
@@ -72,7 +73,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function authenticate() {
       const { dni, password } = body;
       const emp = employee.find(x => x.dni === dni && x.password === password);
-      console.log("authenticate : " + dni + " " + password + " : " + emp) ;
+      console.log("authenticate : " + dni + " " + password + " : " + emp);
 
       if (!emp) return error("dni or password is incorrect");
 

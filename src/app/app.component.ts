@@ -18,7 +18,7 @@ export class AppComponent {
     this.employeeService.employee.subscribe(x => (this.employee = x));
   }
 
-  get idAdmin() {
+  get isAdmin() {
     return this.employee && this.employee.role === Role.Admin;
   }
 

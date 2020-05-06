@@ -11,7 +11,6 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  error: "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,6 +22,7 @@ export class LoginComponent implements OnInit {
       this.router.navigate(["/"]);
     }
   }
+
   //inicializar los datos.
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
+
     this.loading = true;
     this.employeeService
       .login(this.f.dni.value, this.f.password.value)
@@ -51,7 +52,6 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         this.router.navigate([this.returnUrl]);
         error => {
-          this.error = error;
           this.loading = false;
         };
       });
