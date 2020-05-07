@@ -41,21 +41,20 @@
 			<label for="fechaContrato">
                 Fecha Contrato : 
             </label>
-			<input type="date" formControlName="fechaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fechaContrato.errors }" [(ngModel)] ="fechaContrato"/>
+			<input type="date" formControlName="fechaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fechaContrato.errors }" [(ngModel)] ="fechaContrato" (input)="calcularDiaVaciones($event.target.value)"/>
 			<div *ngIf="submitted && f.fechaContrato.errors" class="invalid-feedback">
 				<div *ngIf="f.fechaContrato.errors.required">Fecha de Contrato is required</div>
 			</div>
 		</div>
 
-		<div class="form-group col">
+		<div class="form-group col" *ngIf="fechaContrato">
 			<label for="diaVacaciones"> Dia de Vaciones :  </label>
-			<input type="number" formControlName="diaVacaciones" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.diaVacaciones.errors }" value="0" [(ngModel)] ="diaVacaciones"/>
-      <button type="button" class="btn btn-primary" id="calcularDiaVacaciones" (click)="calcularDiaVaciones()">Calcular dia de Vacaciones</button>
+			<input type="number" formControlName="diaVacaciones" class="form-control" [ngClass]="{'is-invalid': submitted && f.diaVacaciones.errors }"  value={{showDiaVacaciones}} readonly/>
 			<div *ngIf="submitted && f.diaVacaciones.errors" class="invalid-feedback">
-				<div *ngIf="f.diaVacaciones.errors.required">Fecha de Contrato is required</div>
+				<div *ngIf="f.diaVacaciones.errors.required">Dia de contrato is required</div>
 			</div>
 		</div>
-
+    
 	</div>
 	<div class="form-group">
 		<button [disabled]="loading" class="btn btn-primary">
