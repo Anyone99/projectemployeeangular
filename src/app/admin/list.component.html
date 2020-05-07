@@ -6,6 +6,8 @@
 			<th style="width: 30%">Nombre</th>
 			<th style="width: 30%">Apellido</th>
 			<th style="width: 30%">DNI</th>
+			<th style="width: 30%">Fecha Contrato</th>
+			<th style="width: 30%">Día de Vacaciones</th>
 			<th style="width: 10%">Acciones</th>
 		</tr>
 	</thead>
@@ -14,6 +16,9 @@
 			<td>{{employee.nombre}}</td>
 			<td>{{employee.apellido}}</td>
 			<td>{{employee.dni}}</td>
+			<td>{{employee.fechaContrato}}</td>
+			<td>{{employee.diaVacaciones}}</td>
+
 			<td style="white-space: nowrap">
 				<a routerLink="edit/{{employee.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
 				<button (click)="deleteUser(employee.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="employee.isDeleting">

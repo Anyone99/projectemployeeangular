@@ -13,7 +13,7 @@ export class AddEditComponent implements OnInit {
   loading = false;
   submitted = false;
   fechaContrato;
-  showDiaVacaciones;
+  diaVacaciones;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,7 +39,7 @@ export class AddEditComponent implements OnInit {
       dni: ["", Validators.required],
       password: ["", passwordValidators],
       fechaContrato: ["", Validators.required],
-      diaVacaciones: [0, Validators.required]
+      diaVacaciones: ["", Validators.required]
     });
 
     if (!this.isAddMode) {
@@ -80,8 +80,7 @@ export class AddEditComponent implements OnInit {
     }
   }
 
-  calcularDiaVaciones(fecha : Date) {
-    console.log(fecha)
+  calcularDiaVaciones() {
     if (this.fechaContrato) {
       const mesTrabajo = 2.5;
       const contrato = new Date(this.fechaContrato);
@@ -94,9 +93,9 @@ export class AddEditComponent implements OnInit {
 
       const diffMonth = diffYear * 12;
 
-      this.showDiaVacaciones = diffMonth * mesTrabajo;
+      this.diaVacaciones = diffMonth * mesTrabajo;
 
-      console.log(diffDays + " " + this.showDiaVacaciones);
+      console.log(diffDays + " " + this.diaVacaciones);
     }
   }
 
