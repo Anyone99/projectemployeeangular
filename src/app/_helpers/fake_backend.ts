@@ -10,7 +10,7 @@ import {
 import { Observable, of, throwError } from "rxjs";
 import { delay, mergeMap, materialize, dematerialize } from "rxjs/operators";
 
-import { Role } from "../_models";
+import { Employee, Role } from "../_models";
 
 // array in local storage for registered users
 let employees = JSON.parse(localStorage.getItem("employees")) || [];
@@ -24,7 +24,7 @@ const admin = {
   fechaContrato: new Date("06/05/2020"),
   diaVacaciones: 0,
   role: Role.Admin,
-  take : "fake-jwt-token"
+  take: "fake-jwt-token"
 };
 
 console.log("fake init : " + JSON.stringify(employees));
@@ -96,7 +96,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return error('dni "' + employee.dni + '" is already taken');
       }
 
-      employee.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
+      employee.id = employees.length
+        ? Math.max(...employees.map(x => x.id)) + 1
+        : 1;
       employee.role = Role.Employee;
       employees.push(employee);
       localStorage.setItem("employees", JSON.stringify(employees));
@@ -105,7 +107,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getUsers() {
       if (!isLoggedIn() && !isAdmin()) return unauthorized();
-      console.log(employees);
+      actualizarDatos();
       return ok(employees);
     }
 
@@ -169,6 +171,39 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (user.role === Role.Admin) {
         return user.role === Role.Admin;
       }
+    }
+
+    function calcularDiaVaciones(employee: Employee) {
+      const mesTrabajo = 2.5;
+      const contrato = new Date(employee.fechaContrato);
+      const now = new Date(Date.now());
+      const timeDiff = Math.abs(now.getTime() - contrato.getTime());
+      // days
+      const diffDays = timeDiff / 86400000;
+
+      const diffYear = diffDays / 365;
+
+      const diffMonth = diffYear * 12;
+
+      const diaVacaciones = diffMonth * mesTrabajo;
+
+      console.log("update diaVacaciones" + diaVacaciones);
+
+      return diaVacaciones;
+    }
+
+    function actualizarDatos() {
+      console.log("----- List ------");
+      employees.forEach(function(value) {
+        value.diaVacaciones = calcularDiaVaciones(value);
+        let user = employees.find(x => x.id === value.id);
+
+        // update and save user
+        Object.assign(user, value);
+      });
+      localStorage.setItem("employees", JSON.stringify(employees));
+
+      console.log("----- /List ------");
     }
   }
 }
