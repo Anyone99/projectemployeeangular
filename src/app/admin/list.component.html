@@ -1,15 +1,15 @@
 <h1>Listas de Empleados</h1>
 <a routerLink="add" class="btn btn-sm btn-success mb-2">Añadir Empleado</a>
 
-<form class="example-form" [formGroup]='searchFrom'>
+<form class="example-form" [formGroup]='employeeFrom'>
 	<mat-form-field class="example-full-width">
 		<input matInput placeholder="Buscar un empleado" [matAutocomplete]="auto" formControlName='employeeInput'>
   </mat-form-field>
-		<span>Your choice is: {{searchFrom.get('employeeInput').value | json}}</span>
+		<span>Your choice is: {{employeeFrom.get('employeeInput').value | json}}</span>
 
 		<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-			<mat-option *ngFor="let employee of (filteredEmployees | async)?.results" [value]="employeee">
-				<span>{{ employee.name }}</span>
+			<mat-option *ngFor="let employee of (filteredEmployee | async)?.results" [value]="employeee">
+				<span>{{ employee.nombre }}</span>
 				<small> | ID: {{employee.id}}</small>
 			</mat-option>
 		</mat-autocomplete>
