@@ -173,6 +173,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       }
     }
 
+    //calcular los dias de vacaciones.
     function calcularDiaVaciones(employee: Employee) {
       const mesTrabajo = 2.5;
       const contrato = new Date(employee.fechaContrato);
@@ -192,6 +193,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return diaVacaciones;
     }
 
+    //actualizar el dia de vacaciones todos los dias.
     function actualizarDatos() {
       console.log("----- List ------");
       employees.forEach(function(value) {
@@ -202,7 +204,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         Object.assign(user, value);
       });
       localStorage.setItem("employees", JSON.stringify(employees));
-
       console.log("----- /List ------");
     }
   }
