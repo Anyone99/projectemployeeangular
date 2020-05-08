@@ -96,9 +96,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return error('dni "' + employee.dni + '" is already taken');
       }
 
-      employee.id = employees.length
-        ? Math.max(...employees.map(x => x.id)) + 1
-        : 1;
+      employee.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
       employee.role = Role.Employee;
       employees.push(employee);
       localStorage.setItem("employees", JSON.stringify(employees));
@@ -188,14 +186,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       const diaVacaciones = diffMonth * mesTrabajo;
 
-      console.log("update diaVacaciones" + diaVacaciones);
-
       return diaVacaciones;
     }
 
     //actualizar el dia de vacaciones todos los dias.
     function actualizarDatos() {
-      console.log("----- List ------");
       employees.forEach(function(value) {
         value.diaVacaciones = calcularDiaVaciones(value);
         let user = employees.find(x => x.id === value.id);
@@ -204,7 +199,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         Object.assign(user, value);
       });
       localStorage.setItem("employees", JSON.stringify(employees));
-      console.log("----- /List ------");
     }
   }
 }

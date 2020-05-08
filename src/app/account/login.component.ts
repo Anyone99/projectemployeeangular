@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
         private accountService: AccountService,
         private alertService: AlertService
     ) {
-        // redirect to home if already logged in
+        // ir a la pagina de home.
         if (this.accountService.employeeValue) {
             this.router.navigate(['/']);
         }
