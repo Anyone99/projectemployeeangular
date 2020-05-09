@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { first, debounceTime, switchMap } from "rxjs/operators";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import { Employee, EmployeeResponse } from "../_models";
 import { AccountService } from "../_services";
 import { Observable } from "rxjs";
