@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-
+import { CommonModule } from "@angular/common";
 // used to create fake backend
 import { fakeBackendProvider } from "./_helpers";
 
@@ -12,9 +12,11 @@ import { AppComponent } from "./app.component";
 import { AlertComponent } from "./_components";
 import { HomeComponent } from "./home";
 import { AdminComponent } from "./admin";
+
 @NgModule({
   imports: [
     BrowserModule,
+    CommonModule,
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule

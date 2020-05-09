@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
-import { map, tap} from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 
 import { environment } from "../../environment";
 import { Employee, EmployeeResponse } from "../_models";
@@ -59,18 +59,12 @@ export class AccountService {
     return this.http.get<Employee>(`${environment.apiUrl}/employee/${id}`);
   }
 
-  findByEmployee(filter : {nombre: string}={nombre: ""}, page=1): Observable<EmployeeResponse>{
-   return this.http.get<EmployeeResponse>('/employee')
-    .pipe(
-      tap((response: EmployeeResponse) => {
-        response.results = response.results
-          .map(employee => new Employee(employee.id, employee.nombre))
-          // Not filtering in the server since in-memory-web-api has somewhat restricted api
-          .filter(employee => employee.name.includes(filter.nombre))
+  findByEmployee(employee: Employee[], nombre: string): any[] {
+    if (!nombre) return employee;
 
-        return response;
-      })
-      );
+    return employee.filter(emplo =>
+      emplo.nombre.toUpperCase().includes(nombre.toUpperCase())
+    );
   }
 
   update(id, params) {

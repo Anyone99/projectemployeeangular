@@ -18,4 +18,8 @@ export class AppComponent {
   get isAdmin() {
     return this.employee.role === Role.Admin;
   }
+
+  handleSearch(value: string) {
+    console.log(value);
+  }
 }

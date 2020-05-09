@@ -10,10 +10,6 @@ export class Employee {
   token: string;
   role: Role;
 
-  constructor(id: string, nombre: string) {}
 }
 
-export interface EmployeeResponse {
-  total: number;
-  results: Employee[];
-}
+

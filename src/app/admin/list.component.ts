@@ -1,16 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import { first, debounceTime, switchMap } from "rxjs/operators";
-import { FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import { Employee, EmployeeResponse } from "../_models";
+import { FormBuilder, FormControl, ReactiveFormsModule } from "@angular/forms";
+import { Employee } from "../_models";
 import { AccountService } from "../_services";
 import { Observable } from "rxjs";
 
-
 @Component({ templateUrl: "list.component.html" })
 export class ListComponent implements OnInit {
+  searchText;
   employees = null;
-  filteredEmployee: Observable<EmployeeResponse>;
-  employeeFrom: FormGroup;
 
   constructor(
     private accountService: AccountService,
@@ -18,29 +16,11 @@ export class ListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.searchText;
     this.accountService
       .getAll()
-      .pipe(first())
+      .pipe(debounceTime(200))
       .subscribe(employees => (this.employees = employees));
-
-    this.employeeFrom = this.formBuilder.group({
-      employeeInput: null
-    });
-
-    this.filteredEmployee = this.employeeFrom
-      .get("employeeInput")
-      .valueChanges.pipe(
-        debounceTime(200),
-        switchMap(value =>
-          this.accountService.findByEmployee({nombre: value}, 1)
-        )
-      );
-  }
-
-  displyFn(employee: Employee){
-    if (employee){
-      return employee.nombre;
-    }
   }
 
   deleteUser(id: string) {

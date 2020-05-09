@@ -21,7 +21,7 @@ const admin = {
   apellido: "admin",
   dni: "00000000F",
   password: "admin222",
-  fechaContrato: new Date("06/05/2020"),
+  fechaContrato: new Date("06-05-2020").getDate(),
   diaVacaciones: 0,
   role: Role.Admin,
   take: "fake-jwt-token"
