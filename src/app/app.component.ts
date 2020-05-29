@@ -19,6 +19,10 @@ export class AppComponent {
     return this.employee.role === Role.Admin;
   }
 
+  get isUsers() {
+    return this.employee.role === Role.Employee;
+  }
+
   handleSearch(value: string) {
     console.log(value);
   }

@@ -51,7 +51,7 @@ export class AddEditComponent implements OnInit {
           this.f.apellido.setValue(x.apellido);
           this.f.dni.setValue(x.dni);
           this.f.fechaContrato.setValue(x.fechaContrato);
-          this.f.diaVacaciones.setValue(x.diaVacaciones);
+          this.f.diaVacaciones.setValue(this.calcularDiaVacionesContrato(this.f.fechaContrato.value));  
         });
     }
   }
@@ -96,6 +96,27 @@ export class AddEditComponent implements OnInit {
       this.diaVacaciones = diffMonth * mesTrabajo;
 
       console.log(diffDays + " " + this.diaVacaciones);
+    }
+  }
+
+   calcularDiaVacionesContrato(fecha : Date) {
+    if (this.fechaContrato) {
+      const mesTrabajo = 2.5;
+      const contrato = new Date(this.fechaContrato);
+      const now = new Date(Date.now());
+      const timeDiff = Math.abs(now.getTime() - contrato.getTime());
+      // days
+      const diffDays = timeDiff / 86400000;
+
+      const diffYear = diffDays / 365;
+
+      const diffMonth = diffYear * 12;
+
+      this.diaVacaciones = diffMonth * mesTrabajo;
+
+      console.log(diffDays + " " + this.diaVacaciones);
+
+      return this.diaVacaciones;
     }
   }
 

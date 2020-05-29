@@ -49,7 +49,7 @@
 
 		<div class="form-group col" *ngIf="fechaContrato">
 			<label for="diaVacaciones"> Dia de Vaciones :  </label>
-			<input type="number" formControlName="diaVacaciones" class="form-control" [ngClass]="{'is-invalid': submitted && f.diaVacaciones.errors }" [(ngModel)] ="diaVacaciones"  value={{diaVacaciones}} readonly/>
+			<input type="number" formControlName="diaVacaciones" class="form-control" [ngClass]="{'is-invalid': submitted && f.diaVacaciones.errors }" [(ngModel)] ="diaVacaciones"  readonly/>
 			<div *ngIf="submitted && f.diaVacaciones.errors" class="invalid-feedback">
 				<div *ngIf="f.diaVacaciones.errors.required">Dia de contrato is required</div>
 			</div>
