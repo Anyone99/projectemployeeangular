@@ -27,6 +27,7 @@ const routes: Routes = [
   {
         path: 'user',
         component: UserComponent,
+        canActivate: [AuthGuard]
     },
 
   // otherwise redirect to home

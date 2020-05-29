@@ -7,6 +7,7 @@ export class Employee {
   apellido: string;
   fechaContrato: Date;
   diaVacaciones: number;
+  vacacionPedido : number;
   token: string;
   role: Role;
 

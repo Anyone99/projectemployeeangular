@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
 
 import { environment } from "../../environment";
-import { Employee, EmployeeResponse } from "../_models";
+import { Employee} from "../_models";
 
 @Injectable({ providedIn: "root" })
 export class AccountService {

@@ -98,6 +98,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       employee.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
       employee.role = Role.Employee;
+      employee.diaVacaciones = Math.floor(employee.diaVacaciones);
+      console.log("Registrar : " + employee.diaVacaciones);
       employees.push(employee);
       localStorage.setItem("employees", JSON.stringify(employees));
       return ok();
@@ -113,6 +115,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (!isLoggedIn()) return unauthorized();
 
       const user = employees.find(x => x.id === idFromUrl());
+      console.log("get User By ID");
+      console.log(user);
       return ok(user);
     }
 
@@ -184,7 +188,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       const diffMonth = diffYear * 12;
 
-      const diaVacaciones = diffMonth * mesTrabajo;
+      const diaVacaciones = Math.floor(diffMonth * mesTrabajo);
+
 
       return diaVacaciones;
     }

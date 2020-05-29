@@ -1,17 +1,19 @@
-<!-- nav -->
-<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="employee">
-    <div class="navbar-nav">
-        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-        <a class="nav-item nav-link" routerLink="/employee" *ngIf="isAdmin" routerLinkActive="active">Users</a>
-        <a class="nav-item nav-link" routerLink="/employee/perfil" *ngIf="isUsers" routerLinkActive="active">Users</a>
-        <a class="nav-item nav-link" (click)="logout()">Logout</a>
-    </div>
-</nav>
-
-<!-- main app container -->
-<div class="app-container" [ngClass]="{ 'bg-light': employee }">
-    <alert></alert>
-    <router-outlet></router-outlet>
-</div>
 
 
+	<!-- nav -->
+	<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="employee">
+		<div class="navbar-nav">
+			<a class="nav-item nav-link" routerLink="/" routerLinkActive="active"
+				[routerLinkActiveOptions]="{exact: true}">Home</a>
+			<a class="nav-item nav-link" routerLink="/employee" *ngIf="isAdmin" routerLinkActive="active">Users</a>
+			<a class="nav-item nav-link" routerLink="/user" *ngIf="isUsers" routerLinkActive="active">Perfil de
+				Usuario</a>
+			<a class="nav-item nav-link" (click)="logout()">Logout</a>
+		</div>
+	</nav>
+
+	<!-- main app container -->
+	<div class="app-container" [ngClass]="{ 'bg-light': employee }">
+		<alert></alert>
+		<router-outlet></router-outlet>
+	</div>

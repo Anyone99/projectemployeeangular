@@ -95,6 +95,8 @@ export class AddEditComponent implements OnInit {
 
       this.diaVacaciones = diffMonth * mesTrabajo;
 
+      this.diaVacaciones = Math.floor(this.diaVacaciones);
+
       console.log(diffDays + " " + this.diaVacaciones);
     }
   }
@@ -113,8 +115,11 @@ export class AddEditComponent implements OnInit {
       const diffMonth = diffYear * 12;
 
       this.diaVacaciones = diffMonth * mesTrabajo;
+     
+      this.diaVacaciones = Math.floor(this.diaVacaciones);
 
       console.log(diffDays + " " + this.diaVacaciones);
+
 
       return this.diaVacaciones;
     }
@@ -136,6 +141,9 @@ export class AddEditComponent implements OnInit {
           this.loading = false;
         }
       );
+       console.log("Registrar usuario ");
+       console.log(this.form.value);
+
   }
 
   private updateUser() {

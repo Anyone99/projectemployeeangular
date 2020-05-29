@@ -1,0 +1,40 @@
+<div class="container">
+	<div class="row">
+		<div class="card">
+			<div class="card-header">Perfil del Usuario : </div>
+			<div class="card-body">
+				<div *ngIf="employeeFrom">
+					<h4> <span class="text-info">Nombre y Apellido : </span>
+						{{employeeFrom.nombre}},{{employeeFrom.apellido}}</h4>
+					<p>
+						<i class="glyphicon glyphicon-envelope"></i><span class="text-info">DNI / NIE : </span>
+						{{employeeFrom.dni}}
+						<br />
+						<i class="glyphicon glyphicon-globe"></i><span class="text-info">Fecha de Contrato : </span>
+						{{employeeFrom.fechaContrato}}
+						<br />
+						<i class="glyphicon glyphicon-gift"></i><span class="text-info">Día de Vacaciones : </span>
+						{{employeeFrom.diaVacaciones}}
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br/>
+
+	<div class="card">
+		<div class="card-header">Pedir Vacaciones </div>
+		<div class="card-body">
+			<p>Selecciona tu día de vacaciones</p>
+      
+			<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
+          <option [value] ="i" *ngFor="let item of counter(employeeFrom.diaVacaciones); let i = index">{{i + 1}}</option>
+       </select>
+			<br/>
+
+			<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
+
+
+		</div>
+	</div>
+</div>
