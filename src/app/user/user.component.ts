@@ -7,11 +7,12 @@ import { AccountService, AlertService } from "../_services";
 
 @Component({ templateUrl: "user.component.html" })
 export class UserComponent {
+
   employee: Employee;
   employeeFrom: Employee;
   loading = false;
   selectDiaVacaciones: number;
-  uno = 1;
+  vacacionQueda : number;
 
   constructor(
     private accountService: AccountService,
@@ -29,7 +30,10 @@ export class UserComponent {
         this.loading = false;
         this.employeeFrom = x;
       });
-    console.log(this.employeeFrom);
+    
+    this.vacacionQueda = this.employeeFrom.diaVacaciones * 1 - this.employeeFrom.vacacionPedido * 1;
+   
+    console.log("vacaciones queda " + this.vacacionQueda);
   }
 
   counter(i: number) {
@@ -39,15 +43,18 @@ export class UserComponent {
   pedirVacaciones() {
     const dia = this.selectDiaVacaciones * 1 + 1 * 1;
     const diaQueda = this.employeeFrom.diaVacaciones - dia;
-    this.employeeFrom.vacacionPedido = dia;
-    console.log(dia + " " + this.employeeFrom.vacacionPedido);
+    //sumará vacacion de pedido + dia;
+    this.employeeFrom.vacacionPedido = dia * 1 + this.employeeFrom.vacacionPedido * 1;
 
-     this.accountService
+    console.log(dia + " ");
+    console.log(this.employeeFrom);
+
+    this.accountService
       .update(this.employeeFrom.id, this.employeeFrom)
       .pipe(first())
       .subscribe(
         data => {
-          this.alertService.success("Update successful", {
+          this.alertService.success("Has pedido correctamente", {
             keepAfterRouteChange: true
           });
           this.router.navigate(["..", { relativeTo: this.router }]);
@@ -56,6 +63,6 @@ export class UserComponent {
           this.alertService.error(error);
           this.loading = false;
         }
-
+      );
   }
 }

@@ -15,26 +15,31 @@
 						<br />
 						<i class="glyphicon glyphicon-gift"></i><span class="text-info">Día de Vacaciones : </span>
 						{{employeeFrom.diaVacaciones}}
+
+            <i class="glyphicon glyphicon-gift"></i><span class="text-info">Vacaciones has pedido : </span>
+						{{employeeFrom.vacacionPedido}},{{vacacionQueda}}
 					</p>
 				</div>
 			</div>
 		</div>
-	</div>
-	<br/>
+		<br/><br/>
+		<br/>
 
-	<div class="card">
-		<div class="card-header">Pedir Vacaciones </div>
-		<div class="card-body">
-			<p>Selecciona tu día de vacaciones</p>
-      
-			<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
-          <option [value] ="i" *ngFor="let item of counter(employeeFrom.diaVacaciones); let i = index">{{i + 1}}</option>
+		<div class="row">
+			<div class="card">
+				<div class="card-header">Pedir Vacaciones </div>
+				<div class="card-body">
+
+					<h4>Selecciona tu día de vacaciones</h4>
+					<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
+          <option [value] ="i" *ngFor="let item of counter(vacacionQueda); let i = index">{{i + 1}}</option>
        </select>
-			<br/>
+					<br/>
 
-			<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
-
-
+					<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
+				</div>
+			</div>
 		</div>
+
 	</div>
 </div>
