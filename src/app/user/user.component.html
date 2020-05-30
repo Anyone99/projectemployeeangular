@@ -43,29 +43,19 @@
 	<h1 class="card-header bg-secondary text-white">Pedir Vacaciones </h1>
 	<div class="card-body">
 
-		<div *ngIf=" employeeFrom.vacacionPedido  == null ">
-			<h4>Selecciona los restantes vacaciones : </h4>
+		<h4>Selecciona los restantes vacaciones : </h4>
 
+		<div *ngIf="employeeFrom.diaVacaciones > 0 ">
 			<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
           <option [value] ="i" *ngFor="let item of counter(employeeFrom.diaVacaciones); let i = index">{{i + 1}}</option>
        </select>
-			<br/>
-
-			<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
 		</div>
 
-		<div *ngIf="(employeeFrom.diaVacaciones - employeeFrom.vacacionPedido) > 0">
-			<h4>Selecciona los restantes vacaciones : </h4>
+		<br/>
 
-			<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
-          <option [value] ="i" *ngFor="let item of counter(employeeFrom.diaVacaciones - employeeFrom.vacacionPedido); let i = index">{{i + 1}}</option>
-       </select>
-			<br/>
+		<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
 
-			<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
-		</div>
-
-		<div *ngIf="(employeeFrom.diaVacaciones - employeeFrom.vacacionPedido) <=0">
+		<div *ngIf="(employeeFrom.diaVacaciones) <=0">
 			<h4 class="text-danger">Ya no queda vacación para pedir ! </h4>
 		</div>
 	</div>

@@ -13,7 +13,6 @@ import { delay, mergeMap, materialize, dematerialize } from "rxjs/operators";
 
 import { Employee, Role } from "../_models";
 
-let date = new Date();
 // array in local storage for registered users
 let employees = JSON.parse(localStorage.getItem("employees")) || [];
 
@@ -23,7 +22,7 @@ const admin = {
   apellido: "admin",
   dni: "00000000F",
   password: "admin222",
-  fechaContrato: new Date(Date.now()).getDate(),
+  fechaContrato: new Date(Date.now()),
   diaVacaciones: 0,
   role: Role.Admin,
   take: "fake-jwt-token"
@@ -54,6 +53,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         console.log("Admin : " + admin);
       }
 
+      actualizarDatos();
+
       switch (true) {
         case url.endsWith("/employee/authenticate") && method === "POST":
           return authenticate();
@@ -77,10 +78,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function authenticate() {
       const { dni, password } = body;
+
       const employee = employees.find(
         x => x.dni === dni && x.password === password
       );
       if (!employee) return error("dni or password is incorrect");
+
       return ok({
         id: employee.id,
         dni: employee.dni,
@@ -106,6 +109,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       employee.diaVacaciones = Math.floor(employee.diaVacaciones);
 
+      employee.dni = employee.dni.toUpperCase();
+
       console.log("Registrar : " + employee.diaVacaciones);
 
       employees.push(employee);
@@ -116,7 +121,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getUsers() {
       if (!isLoggedIn() && !isAdmin()) return unauthorized();
-      actualizarDatos();
       return ok(employees);
     }
 
@@ -131,8 +135,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function updateUser() {
       if (!isLoggedIn() && !isAdmin()) return unauthorized();
+     
       let params = body;
+
       let user = employees.find(x => x.id === idFromUrl());
+
+      user.dni = user.dni.toUpperCase();
 
       // only update password if entered
       if (!params.password) {
@@ -149,7 +157,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function deleteUser() {
       if (!isLoggedIn()) return unauthorized();
       if (!isAdmin()) return unauthorized();
+     
       employees = employees.filter(x => x.id !== idFromUrl());
+     
       localStorage.setItem("employees", JSON.stringify(employees));
       return ok();
     }
@@ -205,7 +215,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     //actualizar el dia de vacaciones todos los dias.
     function actualizarDatos() {
       employees.forEach(function(value) {
-        value.diaVacaciones = calcularDiaVaciones(value);
+        if (value.vacacionPedido > 0) {
+          value.diaVacaciones =
+            calcularDiaVaciones(value) * 1 - value.vacacionPedido * 1;
+        } else {
+          value.diaVacaciones = calcularDiaVaciones(value);
+        }
+
         let user = employees.find(x => x.id === value.id);
 
         // update and save user
