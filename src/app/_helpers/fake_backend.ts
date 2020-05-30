@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+
 import {
   HttpRequest,
   HttpResponse,
@@ -12,16 +13,16 @@ import { delay, mergeMap, materialize, dematerialize } from "rxjs/operators";
 
 import { Employee, Role } from "../_models";
 
+let date = new Date();
 // array in local storage for registered users
 let employees = JSON.parse(localStorage.getItem("employees")) || [];
-
 const admin = {
   id: "1",
   nombre: "admin",
   apellido: "admin",
   dni: "00000000F",
   password: "admin222",
-  fechaContrato: new Date("06-05-2020").getUTCDate(),
+  fechaContrato: new Date(Date.now()),
   diaVacaciones: 0,
   role: Role.Admin,
   take: "fake-jwt-token"
@@ -40,7 +41,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     // wrap in delayed observable to simulate server api call
     return of(null)
       .pipe(mergeMap(handleRoute))
-      .pipe(materialize()) // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648)
+      .pipe(materialize())
       .pipe(delay(500))
       .pipe(dematerialize());
 
@@ -96,14 +97,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         return error('dni "' + employee.dni + '" is already taken');
       }
 
-      employee.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
+      employee.id = employees.length
+        ? Math.max(...employees.map(x => x.id)) + 1
+        : 1;
+
       employee.role = Role.Employee;
+
       employee.diaVacaciones = Math.floor(employee.diaVacaciones);
-      
+
       console.log("Registrar : " + employee.diaVacaciones);
-      
+
       employees.push(employee);
-      
+
       localStorage.setItem("employees", JSON.stringify(employees));
       return ok();
     }
@@ -192,7 +197,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       const diffMonth = diffYear * 12;
 
       const diaVacaciones = Math.floor(diffMonth * mesTrabajo);
-
 
       return diaVacaciones;
     }
