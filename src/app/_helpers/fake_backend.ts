@@ -16,13 +16,14 @@ import { Employee, Role } from "../_models";
 let date = new Date();
 // array in local storage for registered users
 let employees = JSON.parse(localStorage.getItem("employees")) || [];
+
 const admin = {
   id: "1",
   nombre: "admin",
   apellido: "admin",
   dni: "00000000F",
   password: "admin222",
-  fechaContrato: new Date(Date.now()),
+  fechaContrato: new Date(Date.now()).getDate(),
   diaVacaciones: 0,
   role: Role.Admin,
   take: "fake-jwt-token"
