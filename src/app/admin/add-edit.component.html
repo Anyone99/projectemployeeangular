@@ -24,7 +24,7 @@
 	<div class="form-row">
 		<div class="form-group col">
 			<label for="dni">DNI : </label>
-			<input type="text" formControlName="dni" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }" pattern="[0-9]{7,8}[A-Z]{1}"	title="Número y Letra. 8 número y 1 letras con mayúscula"/>
+			<input type="text" formControlName="dni" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }" pattern="[0-9]{8}[A-Z]{1}"	title="Número y Letra. 8 número y 1 letras con mayúscula"/>
 
 			<div *ngIf="submitted && f.dni.errors" class="invalid-feedback">
 				<div *ngIf="f.dni.errors.required">dni is required</div>
@@ -33,7 +33,7 @@
 		<div class="form-group col">
 			<label for="password">
                 Password :
-                <em *ngIf="!isAddMode">(Leave blank to keep the same password)</em>
+                <em *ngIf="!isAddMode">(Si no quieres modificar la contraseña, no la introduces!)</em>
             </label>
 			<input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
 
@@ -41,7 +41,7 @@
 
 				<div *ngIf="f.password.errors.required">Password is required</div>
 
-				<div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+				<div *ngIf="f.password.errors.minlength">Password tiene que ser 6 caracter</div>
 			</div>
 		</div>
 

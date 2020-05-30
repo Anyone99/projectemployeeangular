@@ -53,7 +53,7 @@ export class AddEditComponent implements OnInit {
           this.f.dni.setValue(x.dni);
           this.f.fechaContrato.setValue(x.fechaContrato);
           this.f.diaVacaciones.setValue(
-          this.calcularDiaVacionesContrato(this.f.fechaContrato.value)
+            this.calcularDiaVacionesContrato(this.f.fechaContrato.value)
           );
         });
     }
@@ -84,23 +84,26 @@ export class AddEditComponent implements OnInit {
   }
 
   calcularDiaVaciones() {
+    const now = new Date(Date.now());
     if (this.fechaContrato) {
-      const mesTrabajo = 2.5;
       const contrato = new Date(this.fechaContrato);
-      const now = new Date(Date.now());
-      const timeDiff = Math.abs(now.getTime() - contrato.getTime());
-      // days
-      const diffDays = timeDiff / 86400000;
+      //si la fecha de contrato es mayor que la fecha de ahora.
+      if (contrato > now) {
+        this.diaVacaciones = 0;
+      } else {
+        const mesTrabajo = 2.5;
+        const timeDiff = Math.abs(now.getTime() - contrato.getTime());
+        // days
+        const diffDays = timeDiff / 86400000;
 
-      const diffYear = diffDays / 365;
+        const diffYear = diffDays / 365;
 
-      const diffMonth = diffYear * 12;
+        const diffMonth = diffYear * 12;
 
-      this.diaVacaciones = diffMonth * mesTrabajo;
+        this.diaVacaciones = diffMonth * mesTrabajo;
 
-      this.diaVacaciones = Math.floor(this.diaVacaciones);
-
-      console.log(diffDays + " " + this.diaVacaciones);
+        this.diaVacaciones = Math.floor(this.diaVacaciones);
+      }
     }
   }
 
@@ -126,24 +129,29 @@ export class AddEditComponent implements OnInit {
   }*/
 
   calcularDiaVacionesContrato(fecha: Date) {
-    if (this.fechaContrato) {
-      const mesTrabajo = 2.5;
-      const contrato = new Date(this.fechaContrato);
+    if (fecha) {
+      const contrato = new Date(fecha);
       const now = new Date(Date.now());
-      const timeDiff = Math.abs(now.getTime() - contrato.getTime());
-      // days
-      const diffDays = timeDiff / 86400000;
 
-      const diffYear = diffDays / 365;
+      if (contrato > now) {
+        this.diaVacaciones = 0;
+      } else {
+        const mesTrabajo = 2.5;
+        const timeDiff = Math.abs(now.getTime() - contrato.getTime());
+        // days
+        const diffDays = timeDiff / 86400000;
 
-      const diffMonth = diffYear * 12;
+        const diffYear = diffDays / 365;
 
-      this.diaVacaciones = diffMonth * mesTrabajo;
+        const diffMonth = diffYear * 12;
 
-      this.diaVacaciones = Math.floor(this.diaVacaciones);
+        this.diaVacaciones = diffMonth * mesTrabajo;
 
-      console.log(diffDays + " " + this.diaVacaciones);
+        this.diaVacaciones = Math.floor(this.diaVacaciones);
 
+        console.log(diffDays + " " + this.diaVacaciones);
+      }
+      
       return this.diaVacaciones;
     }
   }

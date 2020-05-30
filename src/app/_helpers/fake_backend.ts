@@ -195,20 +195,26 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     //calcular los dias de vacaciones.
     function calcularDiaVaciones(employee: Employee) {
-      const mesTrabajo = 2.5;
       const contrato = new Date(employee.fechaContrato);
       const now = new Date(Date.now());
-      const timeDiff = Math.abs(now.getTime() - contrato.getTime());
-      // days
-      const diffDays = timeDiff / 86400000;
+      if (employee) {
+        if (contrato > now) {
+          return 0;
+        } else {
+          const mesTrabajo = 2.5;
 
-      const diffYear = diffDays / 365;
+          const timeDiff = Math.abs(now.getTime() - contrato.getTime());
+          // days
+          const diffDays = timeDiff / 86400000;
 
-      const diffMonth = diffYear * 12;
+          const diffYear = diffDays / 365;
 
-      const diaVacaciones = Math.floor(diffMonth * mesTrabajo);
+          const diffMonth = diffYear * 12;
 
-      return diaVacaciones;
+          const diaVacaciones = Math.floor(diffMonth * mesTrabajo);
+          return diaVacaciones;
+        }
+      }
     }
 
     //actualizar el dia de vacaciones todos los dias.
