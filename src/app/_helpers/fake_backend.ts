@@ -135,7 +135,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function updateUser() {
       if (!isLoggedIn() && !isAdmin()) return unauthorized();
-     
+
       let params = body;
 
       let user = employees.find(x => x.id === idFromUrl());
@@ -156,10 +156,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function deleteUser() {
       if (!isLoggedIn()) return unauthorized();
-      if (!isAdmin()) return unauthorized();
-     
+
       employees = employees.filter(x => x.id !== idFromUrl());
-     
+
       localStorage.setItem("employees", JSON.stringify(employees));
       return ok();
     }

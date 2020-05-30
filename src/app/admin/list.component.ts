@@ -16,6 +16,7 @@ export class ListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    //texto para buscar
     this.searchText;
     this.accountService
       .getAll()
@@ -33,4 +34,6 @@ export class ListComponent implements OnInit {
         this.employees = this.employees.filter(x => x.id !== id);
       });
   }
+
+ 
 }

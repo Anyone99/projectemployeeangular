@@ -90,9 +90,9 @@ export class AccountService {
     return this.http.delete(`${environment.apiUrl}/employee/${id}`).pipe(
       map(x => {
         // auto logout if the logged in employee deleted their own record
-        if (id == this.employeeValue.id) {
+        /* if (id == this.employeeValue.id) {
           this.logout();
-        }
+        }*/
         return x;
       })
     );

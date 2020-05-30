@@ -24,14 +24,16 @@
 				<td value="MM/dd/yyyy">{{employee.fechaContrato}}</td>
 				<td>{{employee.diaVacaciones}}</td>
 
-				<td style="white-space: nowrap">
+				<td style="white-space: nowrap" *ngIf="employee.role == 'Employee'">
 					<a routerLink="edit/{{employee.id}}" class="btn btn-sm btn-primary mr-1">Edit</a>
 					<button (click)="deleteUser(employee.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="employee.isDeleting">
                     <span *ngIf="employee.isDeleting" class="spinner-border spinner-border-sm"></span>
                     <span *ngIf="!employee.isDeleting">Delete</span>
-                </button>
+          </button>
 				</td>
+
 			</tr>
+
 			<tr *ngIf="!employees">
 				<td colspan="4" class="text-center">
 					<span>No hay empleados;</span>

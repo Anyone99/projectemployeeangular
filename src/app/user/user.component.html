@@ -15,23 +15,9 @@
 				{{employeeFrom.fechaContrato}}
 			</p>
 
-			<p> <span class="text-info"> <i class="fas fa-calendar-day"></i> &nbsp; Total Vacaciones  : 
+			<p> <span class="text-info"> <i class="fas fa-calendar-day"></i> &nbsp; Total Vacaciones  Queda : 
       </span> {{employeeFrom.diaVacaciones}}</p>
 
-			<div *ngIf="employeeFrom.vacacionPedido <= 0">
-
-				<p>
-					<span class="text-info"> <i class="far fa-calendar-minus"></i> &nbsp; Total Vacaciones has pedido  : </span>
-					<span> 0</span>
-				</p>
-
-			</div>
-
-			<div *ngIf="employeeFrom.vacacionPedido > 0">
-				<p>
-					<span class="text-info"> <i class="far fa-calendar-minus"></i> &nbsp; Vacaciones has pedido Total  : </span>
-					<span> {{employeeFrom.vacacionPedido}} </span></p>
-			</div>
 		</div>
 
 	</div>
@@ -49,14 +35,16 @@
 			<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
           <option [value] ="i" *ngFor="let item of counter(employeeFrom.diaVacaciones); let i = index">{{i + 1}}</option>
        </select>
+
+			<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
+
 		</div>
 
 		<br/>
 
-		<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
 
 		<div *ngIf="(employeeFrom.diaVacaciones) <=0">
-			<h4 class="text-danger">Ya no queda vacación para pedir ! </h4>
+			<h4 class="alert alert-danger">Ya no queda vacación para pedir ! </h4>
 		</div>
 	</div>
 </div>
