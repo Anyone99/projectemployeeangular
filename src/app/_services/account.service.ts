@@ -12,6 +12,7 @@ export class AccountService {
   private employeeSubject: BehaviorSubject<Employee>;
   public employee: Observable<Employee>;
 
+  //Constructor
   constructor(private router: Router, private http: HttpClient) {
     this.employeeSubject = new BehaviorSubject<Employee>(
       JSON.parse(localStorage.getItem("employees"))
@@ -19,6 +20,7 @@ export class AccountService {
     this.employee = this.employeeSubject.asObservable();
   }
 
+  //Obtener el valor de empleado
   public get employeeValue(): Employee {
     return this.employeeSubject.value;
   }
@@ -35,6 +37,7 @@ export class AccountService {
       .pipe(
         map(employee => {
           // store employee details and jwt token in local storage to keep employee logged in between page refreshes
+          //Guardar los datos de empleado y jwt token dentro de la localstorage para cuando mantener a los empleados conectados entre las actualizaciones de página.
           localStorage.setItem("employees", JSON.stringify(employee));
           this.employeeSubject.next(employee);
           return employee;
@@ -43,7 +46,7 @@ export class AccountService {
   }
 
   logout() {
-    // remove employee from local storage and set current employee to null
+    // eliminar el empleado del almacenamiento local y establecer empleado actual en null y vuelve a la página login
     localStorage.removeItem("employees");
     this.employeeSubject.next(null);
     this.router.navigate(["/account/login"]);
@@ -72,13 +75,13 @@ export class AccountService {
   update(id, params) {
     return this.http.put(`${environment.apiUrl}/employee/${id}`, params).pipe(
       map(x => {
-        // update stored employee if the logged in employee updated their own record
+        // actualizar empleado almacenado si el empleado registrado actualizó su propioc  registro
         if (id == this.employeeValue.id) {
-          // update local storage
+          // modificar local storage
           const employee = { ...this.employeeValue, ...params };
           localStorage.setItem("employees", JSON.stringify(employee));
 
-          // publish updated employee to subscribers
+          // publicar empleado actualizado a los suscriptores
           this.employeeSubject.next(employee);
         }
         return x;

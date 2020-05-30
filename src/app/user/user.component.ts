@@ -36,7 +36,6 @@ export class UserComponent {
 
   pedirVacaciones() {
     const dia = this.selectDiaVacaciones * 1 + 1 * 1;
-
     const diaQueda = this.employeeFrom.diaVacaciones - dia;
     //sumará vacacion de pedido + dia;
     if (this.employeeFrom.vacacionPedido > 0) {

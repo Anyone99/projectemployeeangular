@@ -13,9 +13,10 @@ import { delay, mergeMap, materialize, dematerialize } from "rxjs/operators";
 
 import { Employee, Role } from "../_models";
 
-// array in local storage for registered users
+// array in local storage para registrar el usuario
 let employees = JSON.parse(localStorage.getItem("employees")) || [];
 
+//guardar el administrador por defecto.
 const admin = {
   id: "1",
   nombre: "admin",
@@ -38,13 +39,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const { url, method, headers, body } = request;
 
-    // wrap in delayed observable to simulate server api call
+    // envolver en observable retrasado para simular la llamada api del servidor
     return of(null)
       .pipe(mergeMap(handleRoute))
       .pipe(materialize())
       .pipe(delay(500))
       .pipe(dematerialize());
 
+    //si en localstorage no existe el administrador, se guardará.
     function handleRoute() {
       if (employees.find(x => x.dni === "00000000F")) {
       } else {
@@ -53,6 +55,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         console.log("Admin : " + admin);
       }
 
+      //acutalizar los datos.
       actualizarDatos();
 
       switch (true) {
@@ -69,13 +72,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         case url.match(/\/employee\/\d+$/) && method === "DELETE":
           return deleteUser();
         default:
-          // pass through any requests not handled above
+          // pasar a través de cualquier solicitud que no se maneje por encima
           return next.handle(request);
       }
     }
 
-    // route functions
-
+    // función de route
     function authenticate() {
       const { dni, password } = body;
 
@@ -142,12 +144,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       user.dni = user.dni.toUpperCase();
 
-      // only update password if entered
+      //solo modificar la contraseña si introduce
       if (!params.password) {
         delete params.password;
       }
 
-      // update and save user
+      // guardar y modificar el usuario
       Object.assign(user, params);
       localStorage.setItem("employees", JSON.stringify(employees));
 
@@ -164,7 +166,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     // helper functions
-
+    
     function ok(body?) {
       return of(new HttpResponse({ status: 200, body }));
     }
