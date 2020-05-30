@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { map, tap } from "rxjs/operators";
 
 import { environment } from "../../environment";
-import { Employee} from "../_models";
+import { Employee } from "../_models";
 
 @Injectable({ providedIn: "root" })
 export class AccountService {
@@ -24,7 +24,9 @@ export class AccountService {
   }
 
   login(dni, password) {
+    dni = dni.toUpperCase();
     console.log("Account - service: Login " + dni + " " + password);
+
     return this.http
       .post<Employee>(`${environment.apiUrl}/employee/authenticate`, {
         dni,

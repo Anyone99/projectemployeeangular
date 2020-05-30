@@ -29,6 +29,7 @@ export class AddEditComponent implements OnInit {
 
     // password not required in edit mode
     const passwordValidators = [Validators.minLength(6)];
+
     if (this.isAddMode) {
       passwordValidators.push(Validators.required);
     }
@@ -51,7 +52,9 @@ export class AddEditComponent implements OnInit {
           this.f.apellido.setValue(x.apellido);
           this.f.dni.setValue(x.dni);
           this.f.fechaContrato.setValue(x.fechaContrato);
-          this.f.diaVacaciones.setValue(this.calcularDiaVacionesContrato(this.f.fechaContrato.value));  
+          this.f.diaVacaciones.setValue(
+          this.calcularDiaVacionesContrato(this.f.fechaContrato.value)
+          );
         });
     }
   }
@@ -101,7 +104,28 @@ export class AddEditComponent implements OnInit {
     }
   }
 
-   calcularDiaVacionesContrato(fecha : Date) {
+  /*validarNie(value: string) {
+    const validChars = "TRWAGMYFPDXBNJZSQVHLCKET";
+    const nifRexp = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKET]$/i;
+    const nieRexp = /^[XYZ][0-9]{7}[TRWAGMYFPDXBNJZSQVHLCKET]$/i;
+    const str = value.toString().toUpperCase();
+
+    if (!nifRexp.test(str) && !nieRexp.test(str)) return false;
+
+    const nie = str
+      .replace(/^[X]/, "0")
+      .replace(/^[Y]/, "1")
+      .replace(/^[Z]/, "2");
+
+    const letter = str.substr(-1);
+    const charIndex = parseInt(nie.substr(0, 8)) % 23;
+
+    if (validChars.charAt(charIndex) === letter) return true;
+
+    return false;
+  }*/
+
+  calcularDiaVacionesContrato(fecha: Date) {
     if (this.fechaContrato) {
       const mesTrabajo = 2.5;
       const contrato = new Date(this.fechaContrato);
@@ -115,11 +139,10 @@ export class AddEditComponent implements OnInit {
       const diffMonth = diffYear * 12;
 
       this.diaVacaciones = diffMonth * mesTrabajo;
-     
+
       this.diaVacaciones = Math.floor(this.diaVacaciones);
 
       console.log(diffDays + " " + this.diaVacaciones);
-
 
       return this.diaVacaciones;
     }
@@ -141,9 +164,8 @@ export class AddEditComponent implements OnInit {
           this.loading = false;
         }
       );
-       console.log("Registrar usuario ");
-       console.log(this.form.value);
-
+    console.log("Registrar usuario ");
+    console.log(this.form.value);
   }
 
   private updateUser() {

@@ -1,5 +1,6 @@
 <h1 *ngIf="isAddMode">Add User</h1>
 <h1 *ngIf="!isAddMode">Edit User</h1>
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
 	<div class="form-row">
 		<div class="form-group col">
@@ -9,18 +10,22 @@
 				<div *ngIf="f.nombre.errors.required">First Name is required</div>
 			</div>
 		</div>
+
 		<div class="form-group col">
 			<label for="apellido">Apellido : </label>
 			<input type="text" formControlName="apellido" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }" />
+
 			<div *ngIf="submitted && f.apellido.errors" class="invalid-feedback">
 				<div *ngIf="f.apellido.errors.required">Last Name is required</div>
 			</div>
 		</div>
 	</div>
+
 	<div class="form-row">
 		<div class="form-group col">
-			<label for="dni">DNI / NIE  : </label>
-			<input type="text" formControlName="dni" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }" />
+			<label for="dni">DNI : </label>
+			<input type="text" formControlName="dni" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dni.errors }" pattern="[0-9]{7,8}[A-Z]{1}"	title="Número y Letra. 8 número y 1 letras con mayúscula"/>
+
 			<div *ngIf="submitted && f.dni.errors" class="invalid-feedback">
 				<div *ngIf="f.dni.errors.required">dni is required</div>
 			</div>
@@ -31,8 +36,11 @@
                 <em *ngIf="!isAddMode">(Leave blank to keep the same password)</em>
             </label>
 			<input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+
 			<div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+
 				<div *ngIf="f.password.errors.required">Password is required</div>
+
 				<div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
 			</div>
 		</div>
@@ -42,6 +50,7 @@
                 Fecha Contrato : 
             </label>
 			<input type="date" formControlName="fechaContrato" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fechaContrato.errors }" [(ngModel)] ="fechaContrato" (input)="calcularDiaVaciones()"/>
+
 			<div *ngIf="submitted && f.fechaContrato.errors" class="invalid-feedback">
 				<div *ngIf="f.fechaContrato.errors.required">Fecha de Contrato is required</div>
 			</div>
@@ -50,6 +59,7 @@
 		<div class="form-group col" *ngIf="fechaContrato">
 			<label for="diaVacaciones"> Dia de Vaciones :  </label>
 			<input type="number" formControlName="diaVacaciones" class="form-control" [ngClass]="{'is-invalid': submitted && f.diaVacaciones.errors }" [(ngModel)] ="diaVacaciones"  readonly/>
+
 			<div *ngIf="submitted && f.diaVacaciones.errors" class="invalid-feedback">
 				<div *ngIf="f.diaVacaciones.errors.required">Dia de contrato is required</div>
 			</div>

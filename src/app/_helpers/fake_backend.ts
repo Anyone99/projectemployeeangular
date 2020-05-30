@@ -21,7 +21,7 @@ const admin = {
   apellido: "admin",
   dni: "00000000F",
   password: "admin222",
-  fechaContrato: new Date("06-05-2020").getDate(),
+  fechaContrato: new Date("06-05-2020").getUTCDate,
   diaVacaciones: 0,
   role: Role.Admin,
   take: "fake-jwt-token"
@@ -99,8 +99,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       employee.id = employees.length ? Math.max(...employees.map(x => x.id)) + 1 : 1;
       employee.role = Role.Employee;
       employee.diaVacaciones = Math.floor(employee.diaVacaciones);
+      
       console.log("Registrar : " + employee.diaVacaciones);
+      
       employees.push(employee);
+      
       localStorage.setItem("employees", JSON.stringify(employees));
       return ok();
     }
