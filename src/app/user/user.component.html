@@ -1,45 +1,72 @@
-<div class="container">
-	<div class="row">
-		<div class="card">
-			<div class="card-header">Perfil del Usuario : </div>
-			<div class="card-body">
-				<div *ngIf="employeeFrom">
-					<h4> <span class="text-info">Nombre y Apellido : </span>
-						{{employeeFrom.nombre}},{{employeeFrom.apellido}}</h4>
-					<p>
-						<i class="glyphicon glyphicon-envelope"></i><span class="text-info">DNI / NIE : </span>
-						{{employeeFrom.dni}}
-						<br />
-						<i class="glyphicon glyphicon-globe"></i><span class="text-info">Fecha de Contrato : </span>
-						{{employeeFrom.fechaContrato}}
-						<br />
-						<i class="glyphicon glyphicon-gift"></i><span class="text-info">Día de Vacaciones : </span>
-						{{employeeFrom.diaVacaciones}}
+<br/>
 
-            <i class="glyphicon glyphicon-gift"></i><span class="text-info">Vacaciones has pedido : </span>
-						{{employeeFrom.vacacionPedido}},{{vacacionQueda}}
-					</p>
-				</div>
+<div class="card">
+	<h1 class="card-header text-white bg-dark">Perfil del Usuario : </h1>
+	<div class="card-body">
+		<div *ngIf="employeeFrom">
+			<h4> <span class="text-info">Nombre y Apellido : </span>
+				{{employeeFrom.nombre}},{{employeeFrom.apellido}}</h4>
+			<br/>
+			<p>
+				<span class="text-info"> <i class="fas fa-user"></i>&nbsp; DNI / NIE : </span>
+				{{employeeFrom.dni}} </p>
+
+			<p> <span class="text-info"> 	<i class="fas fa-calendar-alt"></i>&nbsp; Fecha de Contrato : </span>
+				{{employeeFrom.fechaContrato}}
+			</p>
+
+			<p> <span class="text-info"> <i class="fas fa-calendar-day"></i> &nbsp; Total Vacaciones  : 
+      </span> {{employeeFrom.diaVacaciones}}</p>
+
+			<div *ngIf="employeeFrom.vacacionPedido <= 0">
+
+				<p>
+					<span class="text-info"> <i class="far fa-calendar-minus"></i> &nbsp; Total Vacaciones has pedido  : </span>
+					<span> 0</span>
+				</p>
+
+			</div>
+
+			<div *ngIf="employeeFrom.vacacionPedido > 0">
+				<p>
+					<span class="text-info"> <i class="far fa-calendar-minus"></i> &nbsp; Vacaciones has pedido Total  : </span>
+					<span> {{employeeFrom.vacacionPedido}} </span></p>
 			</div>
 		</div>
-		<br/><br/>
-		<br/>
 
-		<div class="row">
-			<div class="card">
-				<div class="card-header">Pedir Vacaciones </div>
-				<div class="card-body">
+	</div>
 
-					<h4>Selecciona tu día de vacaciones</h4>
-					<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
-          <option [value] ="i" *ngFor="let item of counter(vacacionQueda); let i = index">{{i + 1}}</option>
+</div>
+<br/><br/>
+<br/>
+<div class="card">
+	<h1 class="card-header bg-secondary text-white">Pedir Vacaciones </h1>
+	<div class="card-body">
+
+		<div *ngIf=" employeeFrom.vacacionPedido  == null ">
+			<h4>Selecciona los restantes vacaciones : </h4>
+
+			<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
+          <option [value] ="i" *ngFor="let item of counter(employeeFrom.diaVacaciones); let i = index">{{i + 1}}</option>
        </select>
-					<br/>
+			<br/>
 
-					<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
-				</div>
-			</div>
+			<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
 		</div>
 
+		<div *ngIf="(employeeFrom.diaVacaciones - employeeFrom.vacacionPedido) > 0">
+			<h4>Selecciona los restantes vacaciones : </h4>
+
+			<select name="selectDiaVacaciones"  class="form-control" [(ngModel)]="selectDiaVacaciones">
+          <option [value] ="i" *ngFor="let item of counter(employeeFrom.diaVacaciones - employeeFrom.vacacionPedido); let i = index">{{i + 1}}</option>
+       </select>
+			<br/>
+
+			<button type="submit" class="btn btn-primary" (click)="pedirVacaciones()">Solicitar</button>
+		</div>
+
+		<div *ngIf="(employeeFrom.diaVacaciones - employeeFrom.vacacionPedido) <=0">
+			<h4 class="text-danger">Ya no queda vacación para pedir ! </h4>
+		</div>
 	</div>
 </div>

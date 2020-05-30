@@ -7,12 +7,10 @@ import { AccountService, AlertService } from "../_services";
 
 @Component({ templateUrl: "user.component.html" })
 export class UserComponent {
-
   employee: Employee;
   employeeFrom: Employee;
   loading = false;
   selectDiaVacaciones: number;
-  vacacionQueda : number;
 
   constructor(
     private accountService: AccountService,
@@ -30,10 +28,6 @@ export class UserComponent {
         this.loading = false;
         this.employeeFrom = x;
       });
-    
-    this.vacacionQueda = this.employeeFrom.diaVacaciones * 1 - this.employeeFrom.vacacionPedido * 1;
-   
-    console.log("vacaciones queda " + this.vacacionQueda);
   }
 
   counter(i: number) {
@@ -42,11 +36,18 @@ export class UserComponent {
 
   pedirVacaciones() {
     const dia = this.selectDiaVacaciones * 1 + 1 * 1;
+
     const diaQueda = this.employeeFrom.diaVacaciones - dia;
     //sumará vacacion de pedido + dia;
-    this.employeeFrom.vacacionPedido = dia * 1 + this.employeeFrom.vacacionPedido * 1;
+    if (this.employeeFrom.vacacionPedido > 0) {
+      this.employeeFrom.vacacionPedido =
+        dia * 1 + this.employeeFrom.vacacionPedido * 1;
+    } else {
+      this.employeeFrom.vacacionPedido = dia;
+    }
 
-    console.log(dia + " ");
+    console.log("Dias " + dia + " " + this.employeeFrom.vacacionPedido);
+
     console.log(this.employeeFrom);
 
     this.accountService
